@@ -1,0 +1,54 @@
+th, td {
+	width: 15vw;
+	min-width: 145px;
+	height: 40px;
+	text-align: center;
+	border: 1px solid black;
+	border-radius: 10px;
+	user-select: none;
+	padding: 0;
+	overflow: hidden;
+}
+th {
+	background: #333333d6;
+	color: white;
+}
+table {margin-left: -2px;}
+.table_input {
+	width: 15vw;
+	min-width: 145px;
+	height: 40px;
+    padding: 0;
+	margin-right: 2px;
+	border-radius: 10px;
+	border: 1px solid black;
+	text-indent: 20px;
+}
+.input_digit, .input_word {
+	width: 100%;
+	min-width: 145px;
+    height: 100%;
+    border-radius: 10px;
+    border: 0px;
+	outline: 0px;
+	text-indent: 20px;
+	padding: 0;
+}
+.fake {border: none;}
+#button, .fake {width: 10vw;}
+.delete {width: 100%;}
+.delete, #button {
+	height: 42px;
+	text-indent: 0;
+	margin: 0;
+	cursor: pointer;
+	border: 0;
+	transition: all .2s ease;
+}
+#button:hover {
+	background: #7bff5f;
+}
+.delete:hover {
+	background: #f13434;
+	color: white;
+}
