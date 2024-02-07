@@ -2,18 +2,23 @@ let but = document.querySelector('#button');
 let del = document.querySelectorAll('.delete');
 let tds = document.querySelectorAll('td');
 
-but.addEventListener('click', addPerson);									//Навешиваем на кнопку "добавить" функцию добавить человека
+//Навешиваем на кнопку "добавить" функцию добавить человека
+but.addEventListener('click', addPerson);
 
+//Навешиваем на кнопку "удалить" функцию удалить человека
 for (let d of del) {
-	d.addEventListener('click', delPerson);									//Навешиваем на кнопку "удалить" функцию удалить человека
+	d.addEventListener('click', delPerson);
 }
+
+//Навешиваем на td-ки, которые не содержат класс 'fake', функцию редактирования ячейки
 for (let t of tds) {
-	if (t.classList.contains('fake') == false) {							//Навешиваем на td-ки, которые не содержат класс 'fake', функцию редактирования ячейки
+	if (t.classList.contains('fake') == false) {
 		t.addEventListener('click', editingCell);
 	}
 }
 
-function editingCell() {													//Функция редактирования содержимого ячейки
+//Функция редактирования содержимого ячейки
+function editingCell() {
 	let input = document.createElement('input');
 	input.type = 'text';
 	input.value = this.innerHTML;
@@ -29,18 +34,21 @@ function editingCell() {													//Функция редактировани
 	this.removeEventListener('click', editingCell);
 }
 
-function recoveryCell() {													//Функция восстановления ячейки после редактирования
+//Функция восстановления ячейки после редактирования
+function recoveryCell() {
 	let parent = this.parentElement;
 	let elem = this;
 	if (this.className == 'input_word') {
 		let result = checkNumber(this.value);
 		checkCell(this.value, elem, parent, result, true);
 	} else if (this.className == 'input_digit') {
-		let result = isNaN(this.value);										//Проверка введенного содержимого на предмет наличия букв
+		let result = isNaN(this.value);
 		checkCell(this.value, elem, parent, result, false);
 	}
 }
-function checkNumber(str) {													//Функция проверки введенного содержимого на предмет наличия цифр
+
+//Функция проверки введенного содержимого на предмет наличия цифр
+function checkNumber(str) {
 	let flag = true;
 	let arr = str.split('');
 	for (let q of arr) {
@@ -50,7 +58,9 @@ function checkNumber(str) {													//Функция проверки вве
 	}
 	return flag;
 }
-function checkCell(value, elem, parent, result, statment) {					//Функция проверки введенного содержимого на наличие цифр или букв. Если введено то, что не должно было, редактирования не произойдет
+
+//Функция проверки введенного содержимого на наличие цифр или букв. Если введено то, что не должно было, редактирования не произойдет
+function checkCell(value, elem, parent, result, statment) {
 	if (result == statment) {
 		parent.innerHTML = value;
 		parent.addEventListener('click', editingCell);
@@ -63,31 +73,39 @@ function checkCell(value, elem, parent, result, statment) {					//Функция
 	}
 }
 
-function addPerson() {														//Функция добавления нового человека
+//Функция добавления нового человека
+function addPerson() {
 	let name = document.querySelector('#name');
 	let family = document.querySelector('#family');
 	let salary = document.querySelector('#salary');	
-	
+
+	//Проверка на все недопустимые символы
 	if (name.value != '' && family.value != '' && salary.value != '' && isNaN(name.value) == true && isNaN(family.value) == true && isNaN(salary.value) == false && checkNumber(name.value) == true && checkNumber(family.value) == true) {
-		let newLine = document.createElement('tr');							//Проверка на все недопустимые символы
+		let newLine = document.createElement('tr');
 		let newName = document.createElement('td');
-		createCell(name, newName, 'word', newLine);							//Функция, которая добавляет ячейку имени
+
+		//Добавляем ячейку имени
+		createCell(name, newName, 'word', newLine);
 		
-		let newFamily = document.createElement('td');						
-		createCell(family, newFamily, 'word', newLine);						//Функция, которая добавляет ячейку фамилии
+		let newFamily = document.createElement('td');
+		//Добавляем ячейку фамилии
+		createCell(family, newFamily, 'word', newLine);
 		
 		let newSalary = document.createElement('td');
-		createCell(salary, newSalary, 'digit', newLine);					//Функция, которая добавляет ячейку зарплаты
-		
-		let newDelete = document.createElement('td');						//Добавляем кнопку удаления
+		//Добавляем ячейку зарплаты
+		createCell(salary, newSalary, 'digit', newLine);
+
+		//Добавляем кнопку удаления
+		let newDelete = document.createElement('td');
 		newDelete.innerHTML = '<input type="submit" class="delete table_input" value="Удалить">';
 		newDelete.style.border = 'none';
 		newDelete.classList.add('fake');
 		newDelete.addEventListener('click', delPerson);
 		newLine.append(newDelete);
-		
+
+		//Добавляем собранную линию ячеек в таблицу
 		let tbody = document.querySelector('tbody');
-		tbody.append(newLine);												//Добавляем собранную линию ячеек в таблицу
+		tbody.append(newLine);
 		
 		name.style.outline = "0px";
 		family.style.outline = "0px";
@@ -99,14 +117,18 @@ function addPerson() {														//Функция добавления нов
 		salary.style.outline = "2px solid red";
 	}
 }
-function createCell(input, td, className, newLine) {						//Функция, которая добавляет соответствующую ячейку в новую линию
+
+//Функция, которая добавляет соответствующую ячейку в новую линию
+function createCell(input, td, className, newLine) {
 	td.innerHTML = input.value;
 	input.value = '';
 	td.addEventListener('click', editingCell);
 	td.classList.add(className);
 	newLine.append(td);
 }
-function delPerson() {														//Функция, которая удаляет человека из таблицы
+
+//Функция, которая удаляет человека из таблицы
+function delPerson() {
 	let parent = this.closest('tr');
 	parent.remove();
 }
